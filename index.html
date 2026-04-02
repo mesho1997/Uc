@@ -103,7 +103,6 @@
             box-shadow: 0 0 10px #FF8C00;
         }
 
-        /* منطقة عرض اسم اللاعب */
         .player-info {
             background: rgba(0,0,0,0.5);
             backdrop-filter: blur(8px);
@@ -259,6 +258,72 @@
             justify-content: center;
         }
 
+        /* قسم المطور */
+        .developer-section {
+            margin-top: 20px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+        }
+
+        .developer-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #FFD700;
+            box-shadow: 0 0 10px rgba(255,215,0,0.5);
+            transition: 0.3s;
+        }
+
+        .developer-avatar:hover {
+            transform: scale(1.05);
+            border-color: #FF8C00;
+        }
+
+        .developer-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .developer-label {
+            font-size: 0.8rem;
+            color: #FFD966;
+            letter-spacing: 1px;
+        }
+
+        .developer-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 5px rgba(255,215,0,0.5);
+        }
+
+        .whatsapp-icon {
+            background: #25D366;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .whatsapp-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #25D366;
+        }
+
         .checkout-btn {
             background: linear-gradient(135deg, #25D366, #075E54);
             border: none;
@@ -300,6 +365,9 @@
             .uc-amount { font-size: 1.5rem; }
             .price { font-size: 1.3rem; }
             .player-name { font-size: 1.1rem; }
+            .developer-name { font-size: 1rem; }
+            .developer-avatar { width: 40px; height: 40px; }
+            .whatsapp-icon { width: 40px; height: 40px; font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -317,7 +385,6 @@
         <button id="saveIDBtn"><i class="fas fa-save"></i> حفظ</button>
     </div>
 
-    <!-- عرض اسم اللاعب -->
     <div class="player-info" id="playerInfo">
         <div class="player-name" id="playerName">
             <i class="fas fa-user"></i> <span id="displayName">---</span>
@@ -332,6 +399,19 @@
             <i class="fas fa-mobile-alt"></i> الدفع عبر فودافون كاش فقط
             <i class="fas fa-check-circle"></i>
         </div>
+        
+        <!-- قسم المطور الجديد -->
+        <div class="developer-section">
+            <img src="mesho-avatar.png" alt="Mesho" class="developer-avatar" id="developerAvatar" onerror="this.src='https://via.placeholder.com/50?text=M'">
+            <div class="developer-info">
+                <span class="developer-label">👨‍💻 Developer</span>
+                <span class="developer-name">Mesho</span>
+            </div>
+            <div class="whatsapp-icon" id="whatsappDevBtn">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+        </div>
+        
         <button class="checkout-btn" id="checkoutBtn">
             <i class="fab fa-whatsapp"></i> شحن الآن عبر واتساب
         </button>
@@ -345,7 +425,6 @@
 </div>
 
 <script>
-    // ⭐⭐⭐ استخدم الصورة المحلية (حطها في نفس مجلد الموقع وسميها uc-icon.png) ⭐⭐⭐
     const UC_IMAGE = "uc-icon.png";
     
     const products = [
@@ -362,7 +441,6 @@
     let savedPlayerID = "";
     let fetchedPlayerName = "";
 
-    // دالة جلب اسم اللاعب (محاكاة للتجربة)
     async function fetchPlayerNameFromID(playerID) {
         const statusDiv = document.getElementById("fetchStatus");
         const playerInfoDiv = document.getElementById("playerInfo");
@@ -373,10 +451,8 @@
         statusDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> جاري جلب اسم اللاعب...';
         displayNameSpan.innerText = "جاري البحث...";
         
-        // محاكاة لجلب الاسم (للتجربة)
         return new Promise((resolve) => {
             setTimeout(() => {
-                // أسماء تجريبية للعرض
                 const demoNames = {
                     "51205752964": "xVIB MESH6",
                     "62208942440580392": "Mesho 7oTPUPG"
@@ -490,6 +566,11 @@
         const phoneNumber = "201151888199";
         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${generateWhatsAppMessage(playerID, selectedProduct, fetchedPlayerName)}`;
         window.open(whatsappUrl, "_blank");
+    });
+
+    // زر واتساب المطور
+    document.getElementById("whatsappDevBtn").addEventListener("click", () => {
+        window.open("https://wa.me/201151888199", "_blank");
     });
 
     renderProducts();
