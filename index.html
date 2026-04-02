@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>PUBG UC Shop | شحن شدات ببجي - فودافون كاش</title>
+    <title>UC SHOP - PUBG | شحن شدات ببجي - فودافون كاش</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -95,6 +95,12 @@
             color: #1e1e2f;
             font-weight: bold;
             cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .player-id-card button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 10px #FF8C00;
         }
 
         /* منطقة عرض اسم اللاعب */
@@ -179,8 +185,8 @@
         }
 
         .uc-icon {
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             object-fit: contain;
             margin-bottom: 10px;
             display: inline-block;
@@ -290,7 +296,7 @@
         }
 
         @media (max-width: 700px) {
-            .uc-icon { width: 40px; height: 40px; }
+            .uc-icon { width: 45px; height: 45px; }
             .uc-amount { font-size: 1.5rem; }
             .price { font-size: 1.3rem; }
             .player-name { font-size: 1.1rem; }
@@ -311,7 +317,7 @@
         <button id="saveIDBtn"><i class="fas fa-save"></i> حفظ</button>
     </div>
 
-    <!-- عرض اسم اللاعب بعد الجلب -->
+    <!-- عرض اسم اللاعب -->
     <div class="player-info" id="playerInfo">
         <div class="player-name" id="playerName">
             <i class="fas fa-user"></i> <span id="displayName">---</span>
@@ -339,7 +345,8 @@
 </div>
 
 <script>
-    const UC_IMAGE = "https://cdn.midasbuy.com/images/uc-small.bc30c95b.png";
+    // ⭐⭐⭐ استخدم الصورة المحلية (حطها في نفس مجلد الموقع وسميها uc-icon.png) ⭐⭐⭐
+    const UC_IMAGE = "uc-icon.png";
     
     const products = [
         { id: 1, uc: 30, price: 25 },
@@ -355,50 +362,28 @@
     let savedPlayerID = "";
     let fetchedPlayerName = "";
 
-    // دالة جلب اسم اللاعب من الـ ID باستخدام Midasbuy API
+    // دالة جلب اسم اللاعب (محاكاة للتجربة)
     async function fetchPlayerNameFromID(playerID) {
         const statusDiv = document.getElementById("fetchStatus");
         const playerInfoDiv = document.getElementById("playerInfo");
         const displayNameSpan = document.getElementById("displayName");
         
-        // إظهار حالة التحميل
         playerInfoDiv.classList.add("show");
         statusDiv.className = "fetch-status loading";
         statusDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> جاري جلب اسم اللاعب...';
         displayNameSpan.innerText = "جاري البحث...";
         
-        try {
-            // محاولة جلب البيانات من Midasbuy (طريقة مباشرة)
-            // ملاحظة: قد تحتاج إلى CORS proxy أو سيرفر وسيط
-            
-            // استخدام خدمة بديلة مؤقتة (CORS proxy)
-            const proxyUrl = 'https://api.allorigins.win/raw?url=';
-            const targetUrl = `https://www.midasbuy.com/interface/getCharac?player_id=${playerID}`;
-            
-            // محاولة الطلب - قد لا يعمل بسبب الحماية
-            const response = await fetch(proxyUrl + encodeURIComponent(targetUrl), {
-                method: 'GET',
-                headers: {
-                    'Origin': 'https://www.midasbuy.com',
-                    'Referer': 'https://www.midasbuy.com/'
-                }
-            });
-            
-            // بديل: بما أن API Midasbuy محمي، هنستخدم اسم تجريبي
-            // في الحقيقة، محتاج API مفتوح أو سيرفر وسيط
-            
-            // حل مؤقت: عرض اسم تجريبي + إشعار
+        // محاكاة لجلب الاسم (للتجربة)
+        return new Promise((resolve) => {
             setTimeout(() => {
-                // محاكاة جلب الاسم (للتجربة)
-                // العميل هيدخل الـ ID الحقيقي بتاعه
-                const mockNames = {
+                // أسماء تجريبية للعرض
+                const demoNames = {
                     "51205752964": "xVIB MESH6",
                     "62208942440580392": "Mesho 7oTPUPG"
                 };
                 
-                let playerName = mockNames[playerID];
+                let playerName = demoNames[playerID];
                 if (!playerName && playerID.length >= 8) {
-                    // إذا كان ID طويل، هنفترض اسم عام
                     playerName = `Player_${playerID.slice(-4)}`;
                 } else if (!playerName) {
                     playerName = "لاعب PUBG";
@@ -408,18 +393,11 @@
                 displayNameSpan.innerText = playerName;
                 statusDiv.className = "fetch-status success";
                 statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> تم جلب الاسم بنجاح';
+                resolve(playerName);
             }, 1000);
-            
-        } catch (error) {
-            console.error("خطأ في جلب الاسم:", error);
-            statusDiv.className = "fetch-status error";
-            statusDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> لم نتمكن من جلب الاسم تلقائياً. الرجاء إدخال الاسم يدوياً إن أمكن.';
-            displayNameSpan.innerText = "غير معروف";
-            fetchedPlayerName = "";
-        }
+        });
     }
 
-    // دالة جلب الاسم عند الضغط على الزر
     document.getElementById("fetchNameBtn").addEventListener("click", async () => {
         const playerID = document.getElementById("playerID").value.trim();
         if (!playerID) {
@@ -438,7 +416,7 @@
             if (selectedProduct && selectedProduct.id === prod.id) card.classList.add("selected");
             
             let innerHtml = `
-                <img src="${UC_IMAGE}" class="uc-icon" alt="UC">
+                <img src="${UC_IMAGE}" class="uc-icon" alt="UC" onerror="this.src='https://via.placeholder.com/50?text=UC'">
                 <div class="uc-amount">
                     <span>${prod.uc}</span>
                 </div>
