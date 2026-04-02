@@ -258,27 +258,26 @@
             justify-content: center;
         }
 
-        /* قسم المطور */
-        .developer-section {
-            margin-top: 20px;
-            padding: 15px;
+        /* حاوية الزر والصورة جنب بعض */
+        .checkout-wrapper {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            background: rgba(0,0,0,0.4);
-            border-radius: 60px;
-            backdrop-filter: blur(4px);
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
+        /* الصورة الدائرية */
         .developer-avatar {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #FFD700;
             box-shadow: 0 0 10px rgba(255,215,0,0.5);
             transition: 0.3s;
+            cursor: pointer;
         }
 
         .developer-avatar:hover {
@@ -286,44 +285,7 @@
             border-color: #FF8C00;
         }
 
-        .developer-info {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .developer-label {
-            font-size: 0.8rem;
-            color: #FFD966;
-            letter-spacing: 1px;
-        }
-
-        .developer-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #FFD700;
-            text-shadow: 0 0 5px rgba(255,215,0,0.5);
-        }
-
-        .whatsapp-icon {
-            background: #25D366;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: white;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-
-        .whatsapp-icon:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #25D366;
-        }
-
+        /* زر الشحن */
         .checkout-btn {
             background: linear-gradient(135deg, #25D366, #075E54);
             border: none;
@@ -334,18 +296,41 @@
             color: white;
             cursor: pointer;
             transition: 0.2s;
-            width: 100%;
-            max-width: 350px;
-            margin: 0 auto;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
+            flex: 1;
+            min-width: 250px;
         }
 
         .checkout-btn:hover {
             transform: scale(1.02);
             box-shadow: 0 0 25px #25D366;
+        }
+
+        /* قسم المطور تحت الزر بالعرض */
+        .developer-section {
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            margin-top: 10px;
+        }
+
+        .developer-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 5px rgba(255,215,0,0.5);
+            letter-spacing: 1px;
+        }
+
+        .developer-name i {
+            margin-left: 8px;
+            color: #25D366;
         }
 
         .note {
@@ -365,9 +350,9 @@
             .uc-amount { font-size: 1.5rem; }
             .price { font-size: 1.3rem; }
             .player-name { font-size: 1.1rem; }
+            .checkout-btn { font-size: 1.2rem; padding: 14px 25px; min-width: 200px; }
+            .developer-avatar { width: 50px; height: 50px; }
             .developer-name { font-size: 1rem; }
-            .developer-avatar { width: 40px; height: 40px; }
-            .whatsapp-icon { width: 40px; height: 40px; font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -400,21 +385,21 @@
             <i class="fas fa-check-circle"></i>
         </div>
         
-        <!-- قسم المطور الجديد -->
-        <div class="developer-section">
-            <img src="mesho-avatar.png" alt="Mesho" class="developer-avatar" id="developerAvatar" onerror="this.src='https://via.placeholder.com/50?text=M'">
-            <div class="developer-info">
-                <span class="developer-label">👨‍💻 Developer</span>
-                <span class="developer-name">Mesho</span>
-            </div>
-            <div class="whatsapp-icon" id="whatsappDevBtn">
-                <i class="fab fa-whatsapp"></i>
-            </div>
+        <!-- الصورة جنب الزر -->
+        <div class="checkout-wrapper">
+            <img src="mesho-avatar.png" alt="Mesho" class="developer-avatar" id="developerAvatar" onerror="this.src='https://via.placeholder.com/60?text=M'">
+            <button class="checkout-btn" id="checkoutBtn">
+                <i class="fab fa-whatsapp"></i> شحن الآن عبر واتساب
+            </button>
         </div>
         
-        <button class="checkout-btn" id="checkoutBtn">
-            <i class="fab fa-whatsapp"></i> شحن الآن عبر واتساب
-        </button>
+        <!-- اسم المطور تحت الزر بالعرض -->
+        <div class="developer-section">
+            <span class="developer-name">
+                <i class="fab fa-whatsapp"></i> Developer: Mesho
+            </span>
+        </div>
+        
         <div class="note">
             <i class="fas fa-info-circle"></i> سيتم تحويلك إلى واتساب لإرسال بيانات الطلب
         </div>
@@ -568,8 +553,8 @@
         window.open(whatsappUrl, "_blank");
     });
 
-    // زر واتساب المطور
-    document.getElementById("whatsappDevBtn").addEventListener("click", () => {
+    // عند الضغط على الصورة تفتح واتسابك
+    document.getElementById("developerAvatar").addEventListener("click", () => {
         window.open("https://wa.me/201151888199", "_blank");
     });
 
